@@ -1,8 +1,62 @@
 // Замени на свой, чтобы получить независимый от других набор данных.
 // "боевая" версия инстапро лежит в ключе prod
-const personalKey = "prod";
+const personalKey = "olga-buchkova";
 const baseHost = "https://webdev-hw-api.vercel.app";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
+
+
+
+// export const postComment = ((token) => {
+
+//   fetch(postsHost, {
+//       method: "POST",
+//       body: JSON.stringify({
+
+//         description: inputTextElement.value.replaceAll("<", "&lt").replaceAll(">", "&gt"),
+//         imageUrl: 
+
+//       }),
+//       headers: {
+
+//           'Authorization': token,
+//       },
+//   })
+//       .then((response) => {
+
+//           if (response.status === 400) {
+//               throw new Error("Ваше имя и комментарий должны содержать хотя бы 3 символа");
+//           } else if (response.status === 500) {
+//               postComment();
+//               // throw new Error("Сервис временно недоступен, пожалуйста попробуйте позже");
+//           } else {
+//               return response.json();
+//           }
+//       })
+//       .then(() => {
+
+//           return getComments();
+
+//       })
+//       .then(() => {
+//           renderComments(comments);
+//           inputNameElement.value = "";
+//           inputTextElement.value = "";
+//           buttonElement.disabled = false;
+//           commentsInputElement(comments);
+//           likeCommentEvent(comments);
+//           loaderElement.style.visibility = "hidden";
+//       })
+//       .catch((error) => {
+//           buttonElement.disabled = false;
+//           if (error.message === 'Failed to fetch') {
+//               alert('Нет соединения с интернетом, проверьте ваше подключение');
+//           } else {
+//               alert(error.message);
+//           }
+//           loaderElement.style.visibility = "hidden";
+//       });
+
+// })
 
 export function getPosts({ token }) {
   return fetch(postsHost, {
