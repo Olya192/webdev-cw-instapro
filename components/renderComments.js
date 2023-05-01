@@ -1,6 +1,7 @@
 
 export const getCommentsEdit = (post) => {
-    return `<li class="post">
+    return `   <ul class="posts" id ="posts">
+   <li class="post">
                     <div class="post-header" data-user-id="642d00329b190443860c2f31">
                         <img src="${post.user.imageUrl}" class="post-header__user-image">
                         <p class="post-header__user-name">${post.user.name}</p>
@@ -17,11 +18,12 @@ export const getCommentsEdit = (post) => {
                       </p>
                     </div>
                     <p class="post-text">
-                      <span class="user-name">Иван Иваныч</span>
-                      Ромашка, ромашка...
+                      <span class="user-name">${post.user.name}</span>
+                      ${post.description}
                     </p>
                     <p class="post-date">
                       19 минут назад
                     </p>
-                  </li>`;
+                  </li>;
+    </ul>`
 }

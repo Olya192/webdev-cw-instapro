@@ -16,11 +16,10 @@ export function renderPostsPageComponent({ appEl, posts }) {
   const commentsHtml = posts
     .map((post) => getCommentsEdit(post)).join("");
 
-  const appHtml = `<div class="page-container">
+  const appHtml = `
+  <div class="page-container">
     <div class="header-container"></div>
-    <ul class="posts" id ="posts">
-    ${commentsHtml}
-    </ul>
+  ${commentsHtml}
   </div>`;
   appEl.innerHTML = appHtml;
 
