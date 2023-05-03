@@ -31,6 +31,19 @@ export const logout = () => {
   goToPage(POSTS_PAGE);
 };
 
+export const updatePage = () => {
+  return getPosts({ token: getToken() })
+    .then((newPosts) => {
+      page = POSTS_PAGE;
+      posts = newPosts;
+      renderApp();
+    })
+    .catch((error) => {
+      console.error(error);
+      // goToPage(POSTS_PAGE);
+    });
+}
+
 /**
  * Включает страницу приложения
  */
@@ -83,7 +96,7 @@ export const goToPage = (newPage, data) => {
   throw new Error("страницы не существует");
 };
 
- export const renderApp = () => {
+export const renderApp = () => {
   const appEl = document.getElementById("app");
 
   if (page === LOADING_PAGE) {
@@ -116,14 +129,12 @@ export const goToPage = (newPage, data) => {
 
   if (page === POSTS_PAGE) {
     return renderPostsPageComponent({
-      appEl,posts
+      appEl, posts
     });
   }
 
   if (page === USER_POSTS_PAGE) {
-    // TODO: реализовать страницу фотографию пользвателя
-    appEl.innerHTML = "Здесь будет страница фотографий пользователя";
-    return;
+
   }
 };
 

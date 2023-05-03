@@ -1,7 +1,9 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-import { posts, goToPage } from "../index.js";
+import { posts, goToPage, renderApp } from "../index.js";
 import { getCommentsEdit } from "./renderComments.js";
+import { likeButtonEvent } from "./add-Like-component.js";
+
 
 export function renderPostsPageComponent({ appEl, posts }) {
   // TODO: реализовать рендер постов из api
@@ -34,4 +36,7 @@ export function renderPostsPageComponent({ appEl, posts }) {
       });
     });
   }
+
+  likeButtonEvent(posts, renderApp);
+
 }
