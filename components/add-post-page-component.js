@@ -1,17 +1,20 @@
-import { postImage } from "../api.js";
+import { postImage, uploadImage } from "../api.js";
 import { renderHeaderComponent } from "./header-component.js";
 
-let imgAdd;
+let imageUrl;
 
 export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
+
   const render = () => {
     // TODO: Реализовать страницу добавления поста
     const reader = new FileReader();
 
-    const inputImg = `  <div>
+
+
+    const inputImg = ` <div>
     <label class="file-upload-label secondary-button">
       <input type="file" class="file-upload-input" id="image-input" style="display:none">
-      ${!imgAdd ? "Выберите фото" : "Изменить фото"}   
+      "Выберите фото"   
     </label>
     </div>`
 
@@ -24,7 +27,24 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
       <div class="form">
       <h3 class="form-title"> Добавить пост</h3>
       </div>
-       <img src="" alt="" id="img"/> ${inputImg}
+      
+      ${imageUrl ?
+
+        `<div class="file-upload-image-conrainer">
+        <img class="file-upload-image" src="${imageUrl}" alt="" id="img"/>
+         <label class="file-upload-label secondary-button">
+         <button class="link-button" id="toggle-button">
+         "Изменить фото"
+       </button>
+       </label>
+       </div>`
+
+        :
+
+        inputImg
+
+      }
+    </div>
       <div class="upload-image-containe">
        <label>
       "Опишите фотографию:"
@@ -42,26 +62,31 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
       element: document.querySelector(".header-container"),
     });
 
+
+
     const fileInputElement = document.getElementById("image-input");
 
-    fileInputElement.addEventListener("input", () => {
-      imgAdd = fileInputElement?.files[0];
-      if (!imgAdd) {
-        return
+    fileInputElement?.addEventListener("change", () => {
+      const file = fileInputElement.files[0];
+      if (file) {
+        const lableEl = document.querySelector(".file-upload-label");
+        lableEl.setAttribute("disabled", true);
+        lableEl.textContent = "Загружаю файл...";
+        uploadImage({ file }).then(({ fileUrl }) => {
+          imageUrl = fileUrl;
+          render();
+        });
       }
-      let imgtag = document.getElementById("img");
-      reader.onload = function (event) {
-        imgtag.src = event.target.result;
-      };
-      reader.readAsDataURL(imgAdd);
-
     });
+
+
+
 
     const textEl = document.getElementById("textarea");
 
 
     document.getElementById("add-button").addEventListener("click", () => {
-      postImage({ file: imgAdd })
+      postImage({ file: imageUrl })
         .then((imagUrl) => {
           onAddPostClick({
             description: textEl.value,

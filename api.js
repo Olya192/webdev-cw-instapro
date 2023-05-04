@@ -158,9 +158,9 @@ export const dislikePost = (postId, token) => {
 
 }
 
-export const userPost = ({token }) => {
+export const userPost = ({token, userId }) => {
 
-  return fetch(postsHost + `/user-posts/${postId}`, {
+  return fetch(postsHost + `/user-posts/${userId}`, {
     method: "GET",
     headers: {
       Authorization: token,

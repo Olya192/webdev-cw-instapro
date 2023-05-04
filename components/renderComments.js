@@ -2,7 +2,7 @@
 export const getCommentsEdit = (post) => {
   return `   <ul class="posts" id ="posts">
    <li class="post">
-                    <div class="post-header" data-user-id="642d00329b190443860c2f31">
+                    <div class="post-header" data-user-id="${post.user.id}">
                         <img src="${post.user.imageUrl}" class="post-header__user-image">
                         <p class="post-header__user-name">${post.user.name}</p>
                     </div>
@@ -14,7 +14,7 @@ export const getCommentsEdit = (post) => {
                       ${post.isLiked ? `<img src="./img/like-active.svg">` : `<img src="./img/like-not-active.svg">`} 
                       </button>
                       <p class="post-likes-text">
-                        Нравится: <strong>${post.likes[post.likes.length - 1]?.name} ${post.likes.length  > 1 ? `и еще ${post.likes.length-1}` : ""} </strong>
+                        Нравится: <strong>${post.likes[post.likes.length - 1]?.name || ""} ${post.likes.length > 1 ? `и еще ${post.likes.length - 1}` : ""} </strong>
                       </p>
                     </div>
                     <p class="post-text">
