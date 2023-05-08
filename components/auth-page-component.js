@@ -12,31 +12,28 @@ export function renderAuthPageComponent({ appEl, setUser }) {
           <div class="header-container"></div>
           <div class="form">
               <h3 class="form-title">
-                ${
-                  isLoginMode
-                    ? "Вход в&nbsp;Instapro"
-                    : "Регистрация в&nbsp;Instapro"
-                }
+                ${isLoginMode
+        ? "Вход в&nbsp;Instapro"
+        : "Регистрация в&nbsp;Instapro"
+      }
                 </h3>
               <div class="form-inputs">
     
-                  ${
-                    !isLoginMode
-                      ? `
+                  ${!isLoginMode
+        ? `
                       <div class="upload-image-container"></div>
                       <input type="text" id="name-input" class="input" placeholder="Имя" />
                       `
-                      : ""
-                  }
+        : ""
+      }
                   
                   <input type="text" id="login-input" class="input" placeholder="Логин" />
                   <input type="password" id="password-input" class="input" placeholder="Пароль" />
                   
                   <div class="form-error"></div>
                   
-                  <button class="button" id="login-button">${
-                    isLoginMode ? "Войти" : "Зарегистрироваться"
-                  }</button>
+                  <button class="button" id="login-button">${isLoginMode ? "Войти" : "Зарегистрироваться"
+      }</button>
               </div>
             
               <div class="form-footer">
@@ -52,7 +49,41 @@ export function renderAuthPageComponent({ appEl, setUser }) {
       </div>    
 `;
 
+
+
     appEl.innerHTML = appHtml;
+
+    const loginEl = document.getElementById("login-input");
+    const passEl = document.getElementById("password-input")
+
+    loginEl.addEventListener("input", () => {
+      buttonAuth();
+    })
+
+    passEl.addEventListener("input", () => {
+      buttonAuth();
+    })
+
+    const buttonAuth = () => {
+      const buttonElement = document.getElementById("login-button")
+      const login = document.getElementById("login-input").value
+      const password = document.getElementById("password-input").value;
+
+      console.log(login === "");
+      console.log(password === "");
+      console.log(buttonElement);
+
+      if (login === '' || password === '') {
+        buttonElement.disabled = true;
+      } else {
+        buttonElement.disabled = false;
+      }
+    }
+
+
+
+
+
 
     // Не вызываем перерендер, чтобы не сбрасывалась заполненная форма
     // Точечно обновляем кусочек дом дерева
@@ -146,6 +177,8 @@ export function renderAuthPageComponent({ appEl, setUser }) {
       isLoginMode = !isLoginMode;
       renderForm();
     });
+
+
   };
 
   renderForm();

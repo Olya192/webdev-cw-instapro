@@ -1,8 +1,75 @@
 // Замени на свой, чтобы получить независимый от других набор данных.
+
+import { getToken, goToPage } from "./index.js";
+import { POSTS_PAGE } from "./routes.js";
+
 // "боевая" версия инстапро лежит в ключе prod
-const personalKey = "prod";
+const personalKey = "olga-buchkova";
 const baseHost = "https://webdev-hw-api.vercel.app";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
+
+
+
+export const postImage = ({ file }) => {
+  const data = new FormData();
+  data.append("file", file);
+
+  return fetch(baseHost + "/api/upload/image", {
+    method: "POST",
+    body: data,
+  })
+    .then((response) => {
+      return response.json();
+    })
+};
+
+
+
+
+
+export const onAddPostClick = (({ description, imageUrl }) => {
+  const token = getToken();
+
+  fetch(postsHost, {
+    method: "POST",
+    body: JSON.stringify({
+
+      description: description,
+      imageUrl: imageUrl
+
+    }),
+    headers: {
+
+      'Authorization': token,
+    },
+  })
+    .then((response) => {
+
+      if (response.status === 400) {
+        throw new Error("Описание фото отсутствует");
+      } else if (response.status === 500) {
+        onAddPostClick(description, imageUrl);
+        // throw new Error("Сервис временно недоступен, пожалуйста попробуйте позже");
+      } else {
+        return response.json();
+      }
+    })
+    .then(() => {
+
+      goToPage(POSTS_PAGE)
+
+    })
+    .catch((error) => {
+
+      if (error.message === 'Failed to fetch') {
+        alert('Нет соединения с интернетом, проверьте ваше подключение');
+      } else {
+        alert(error.message);
+      }
+
+    });
+
+})
 
 export function getPosts({ token }) {
   return fetch(postsHost, {
@@ -67,4 +134,46 @@ export function uploadImage({ file }) {
   }).then((response) => {
     return response.json();
   });
+}
+
+export const likePost = (postId, token) => {
+
+  return fetch(postsHost + `/${postId}/like`, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    }
+  })
+
+}
+
+export const dislikePost = (postId, token) => {
+
+  return fetch(postsHost + `/${postId}/dislike`, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    }
+  })
+
+}
+
+export const userPost = ({token, userId }) => {
+
+  return fetch(postsHost + `/user-posts/${userId}`, {
+    method: "GET",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      if (response.status === 401) {
+        throw new Error("Нет авторизации");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      return data.posts;
+    });
+
 }
